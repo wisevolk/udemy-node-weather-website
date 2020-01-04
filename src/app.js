@@ -1,22 +1,33 @@
+const path = require('path');
 const express = require('express');
+
 const app = express();
+const publicDirectory = path.join(__dirname, '../public');
 
-app.get('', (req,res) => {
-    res.send('<h1>Weather</h1>');
+app.set('view engine', 'hbs')
+app.use(express.static(publicDirectory));
+
+app.get('', (req, res) => {
+    res.render('index', {
+        title: 'Weather',
+        name: 'Wisevolk'
+    });
 });
 
-app.get('/help', (req,res)=>{
-   res.send({
-       name: 'Wise',
-       age: '49'
-   });
+app.get('/about', (req, res) => {
+    res.render('about',{
+        title:'About me',
+        name:'Wisevolk'
+    });
 });
 
-app.get('/about', (req,res)=>{
-   res.send('<h1>About</h1>');
+app.get('/help', (req, res) => {
+    res.render('help',{
+        message: 'Helpful message'
+    });
 });
 
-app.get('/weather', (req,res)=>{
+app.get('/weather', (req, res) => {
     res.send({
         forecast: {
             temperature: '11',
@@ -29,8 +40,7 @@ app.get('/weather', (req,res)=>{
     });
 })
 
- app.listen(3000,()=>{
-     console.log('Server is on port 3000'   );
- });
-
+app.listen(3000, () => {
+    console.log('Server is on port 3000');
+});
 
