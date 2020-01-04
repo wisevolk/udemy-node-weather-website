@@ -25,51 +25,76 @@ app.get('', (req, res) => {
     });
 });
 
-app.get('/about', (req, res) => {
-    res.render('about', {
-        title: 'About me',
-        name: 'Wisevolk'
-    });
-});
-
-app.get('/help', (req, res) => {
-    res.render('help', {
-        message: 'Helpful message',
-        title: 'Help',
-        name: 'Wise'
-    });
-});
-
-app.get('/help/*', (req, res) => {
-    res.render('404', {
-        title: '404 Page not Found',
-        errorText: "Help article not find !",
-        name: 'Wise'
-    });
-});
-
 app.get('/weather', (req, res) => {
+    if (!req.query.address) {
+        return res.send({
+            error: "You must provide an address !"
+        })
+    }
     res.send({
-        forecast: {
-            temperature: '11',
-            precipProbability: '0'
-        },
-        location: {
-            city: 'Paris',
-            country: 'France'
+        forecast: 'It is snowing',
+        location:'Philadelphia',
+        address: req.query.address
+    })
+});
+
+    app.get('/products', (req, res) => {
+        if (!req.query.search) {
+            return res.send({
+                error: "You must provide a search term"
+            })
         }
-    });
-});
+        console.log(req.query.search);
+        res.send({
+            product: []
+        });
+    })
 
-app.get('*', (req, res) => {
-    res.render('404', {
-        title: '404 Page not Found',
-        errorText: "This page can't be find !",
-        name: 'Wise'
+    app.get('/about', (req, res) => {
+        res.render('about', {
+            title: 'About me',
+            name: 'Wisevolk'
+        });
     });
-});
 
-app.listen(3000, () => {
-    console.log('Server is on port 3000');
-});
+    app.get('/help', (req, res) => {
+        res.render('help', {
+            message: 'Helpful message',
+            title: 'Help',
+            name: 'Wise'
+        });
+    });
+
+    app.get('/help/*', (req, res) => {
+        res.render('404', {
+            title: '404 Page not Found',
+            errorText: "Help article not find !",
+            name: 'Wise'
+        });
+    });
+
+    app.get('/weather', (req, res) => {
+        res.send({
+            forecast: {
+                temperature: '11',
+                precipProbability: '0'
+            },
+            location: {
+                city: 'Paris',
+                country: 'France'
+            }
+        });
+    });
+
+    app.get('*', (req, res) => {
+        res.render('404', {
+            title: '404 Page not Found',
+            errorText: "This page can't be find !",
+            name: 'Wise'
+        });
+    });
+
+    app.listen(3000, () => {
+        console.log('Server is on port 3000');
+    });
 
