@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const forecast = require("./utils/forecast");
+const geocode = require("./utils/geocode");
 
 const app = express();
 
@@ -31,70 +33,80 @@ app.get('/weather', (req, res) => {
             error: "You must provide an address !"
         })
     }
-    res.send({
-        forecast: 'It is snowing',
-        location:'Philadelphia',
-        address: req.query.address
-    })
+    geocode(req.query.address, (error, {location, latitude, longitude} = {}) => {
+        if (error) {
+            return res.send({error});
+        }
+        forecast(latitude, longitude, (error, forCastData) => {
+            if (error) {
+                return res.send({error});
+            }
+            res.send({
+                forecast: forCastData,
+                location,
+                address: req.query.address
+            });
+        })
+    });
 });
 
-    app.get('/products', (req, res) => {
-        if (!req.query.search) {
-            return res.send({
-                error: "You must provide a search term"
-            })
+app.get('/products', (req, res) => {
+    if (!req.query.search) {
+        return res.send({
+            error: "You must provide a search term"
+        })
+    }
+    console.log(req.query.search);
+    res.send({
+        product: []
+    });
+})
+
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: 'About me',
+        name: 'Wisevolk'
+    });
+});
+
+app.get('/help', (req, res) => {
+    res.render('help', {
+        message: 'Helpful message',
+        title: 'Help',
+        name: 'Wise'
+    });
+});
+
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        title: '404 Page not Found',
+        errorText: "Help article not find !",
+        name: 'Wise'
+    });
+});
+
+/*app.get('/weather', (req, res) => {
+    res.send({
+        forecast: {
+            temperature: '11',
+            precipProbability: '0'
+        },
+        location: {
+            city: 'Paris',
+            country: 'France'
         }
-        console.log(req.query.search);
-        res.send({
-            product: []
-        });
-    })
-
-    app.get('/about', (req, res) => {
-        res.render('about', {
-            title: 'About me',
-            name: 'Wisevolk'
-        });
     });
+});*/
 
-    app.get('/help', (req, res) => {
-        res.render('help', {
-            message: 'Helpful message',
-            title: 'Help',
-            name: 'Wise'
-        });
+app.get('*', (req, res) => {
+    res.render('404', {
+        title: '404 Page not Found',
+        errorText: "This page can't be find !",
+        name: 'Wise'
     });
+});
 
-    app.get('/help/*', (req, res) => {
-        res.render('404', {
-            title: '404 Page not Found',
-            errorText: "Help article not find !",
-            name: 'Wise'
-        });
-    });
-
-    app.get('/weather', (req, res) => {
-        res.send({
-            forecast: {
-                temperature: '11',
-                precipProbability: '0'
-            },
-            location: {
-                city: 'Paris',
-                country: 'France'
-            }
-        });
-    });
-
-    app.get('*', (req, res) => {
-        res.render('404', {
-            title: '404 Page not Found',
-            errorText: "This page can't be find !",
-            name: 'Wise'
-        });
-    });
-
-    app.listen(3000, () => {
-        console.log('Server is on port 3000');
-    });
+app.listen(3001, () => {
+    console.log('Server is on port 3001');
+});
 
