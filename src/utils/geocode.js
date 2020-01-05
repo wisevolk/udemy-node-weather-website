@@ -1,4 +1,4 @@
-const request = require('request');
+const request = require("request");
 
 const geocode = (address, callback) => {
     const keyMapBox = "pk.eyJ1Ijoid2lzZXZvbGsiLCJhIjoiY2s0d2wydDB5MDU3cjNtbXl6MmNjdTE0aCJ9.yQtDZRHIsuSVUvrT5O4NAA";
@@ -16,7 +16,7 @@ const geocode = (address, callback) => {
         json: true
     }, (error, {body}) => {
         try {
-            //destructuration de l'objet response
+            //destructuration de l"objet response
             //const {body: {message, features}} = response || {};
 
             if (body.message) {
@@ -28,7 +28,7 @@ const geocode = (address, callback) => {
             //const location = place_name;
 
             // DESTRUCTURATION MODIFIÉE POUR RÉSOUDRE LE PROBLÈME DES OBJETS NULL
-            //Destructuration de l'objet features pour les coordonnées GPS
+            //Destructuration de l"objet features pour les coordonnées GPS
             //const {geometry: {coordinates: [latitude, longitude]}} = features[0] || {};
             //console.log(`${decodeURIComponent(address)} se trouve à une latitude de ${latitude} et une longitude de ${longitude}`);
             // console.log(urlMapBox);

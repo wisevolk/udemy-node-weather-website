@@ -1,4 +1,4 @@
-const request = require('request');
+const request = require("request");
 
 const forecast = (latitude, longitude, callback) => {
 
@@ -6,7 +6,7 @@ const forecast = (latitude, longitude, callback) => {
     const url = `https://api.darksky.net/forecast/${keyDarkSky}/${latitude},${longitude}?units=si&lang=fr`;
     console.log(url);
 
-    //utilisation de la simplification d'écriture ES6 des paramètres (url: url)
+    //utilisation de la simplification d"écriture ES6 des paramètres (url: url)
     request({url, json: true}, (error, {body}) => {
         try {
             if (body.error) {
