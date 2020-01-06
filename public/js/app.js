@@ -10,7 +10,7 @@ fetch("http://puzzle.mead.io/puzzle")
 */
 
 const getLocation = (location, callback) => {
-    fetch(`http://localhost:3001/weather?address=${location}`)
+    fetch(`/weather?address=${location}`)
         .then(response => {
             response.json().then(data => {
                 if (data.error)
