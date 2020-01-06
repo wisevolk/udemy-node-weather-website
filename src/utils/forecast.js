@@ -22,8 +22,10 @@ const forecast = (latitude, longitude, callback) => {
                 precipProbability
             }*/
             const returnTime = (ts) => {
+                // return new Date(ts);
                 const time = new Date(ts);
                 return time.getHours() + "h" + time.getMinutes() + "mn";
+
             }
             callback(undefined, `${summary} Il fait actuellement ${temperature} degrés. Il y a  ${precipProbability}% de chance de précipitation. Le soleil se lèvera à ${returnTime(sunriseTime)} et se couchera à ${returnTime(sunsetTime)} ( !!! ces horaires sont faux !!!) , la température minimale sera de ${temperatureLow}°C et atteindra un maximum de ${temperatureHigh}°C`);
             //callback(undefined, forecastDetails);
